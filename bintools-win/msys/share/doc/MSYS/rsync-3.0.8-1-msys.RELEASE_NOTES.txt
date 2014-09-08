@@ -1,0 +1,88 @@
+msys rsync
+========================================================================
+rsync is a file transfer program. rsync uses the 'rsync algorithm' which
+provides a very fast method for bringing remote files into sync. It does
+this by sending just the differences in the files across the link,
+without requiring that both sets of files are present at one of the ends
+of the link beforehand.
+
+Runtime requirements:
+  msysCORE-1.0.18-1-msys-1.0.18-bin
+  libiconv-1.13.1-2-msys-1.0.13-dll-2
+  libpopt-1.15-2-msys-1.0.13-dll-0
+  openssh-5.4p1-1-msys-1.0.13-bin      (optional)
+
+Build requirements:
+  binutils-2.21-3-mingw32-bin
+  gcc-3.4.4-3-msys-1.0.13-bin
+  w32api-3.14-3-msys-1.0.12-dev
+  libiconv-1.13.1-2-msys-1.0.13-dev
+  libpopt-1.15-2-msys-1.0.13-dev
+
+  Devel Tools and Dependent Libraries
+    automake-1.11.1-1-msys-1.0.13-bin
+
+  MSYS Environment
+    msysCORE-1.0.17-1-msys-1.0.17-bin
+    coreutils-5.97-3-msys-1.0.13-bin
+    bash-3.1.17-4-msys-1.0.16-bin
+    make-3.81-3-msys-1.0.13-bin
+    tar-1.23-1-msys-1.0.13-bin
+    xz-4.999.9beta_20100401-1-msys-1.0.13-bin
+    gzip-1.3.12-2-msys-1.0.13-bin
+    liblzma-4.999.9beta_20100401-1-msys-1.0.13-dll-1
+    zlib-1.2.3-2-msys-1.0.13-dll
+    gawk-3.1.7-2-msys-1.0.13-bin
+    sed-4.2.1-2-msys-1.0.13-bin
+
+Canonical website:
+  http://rsync.samba.org/
+
+Canonical download:
+  http://rsync.samba.org/ftp/rsync/
+
+License:
+  GPLv3+
+
+========================================================================
+Build instructions:
+  unpack rsync-3.0.8-X-msys-1.0.17-src.tar.lzma
+  ./msys-build-rsync
+
+This will create:
+  rsync-3.0.8-X-msys-1.0.17-src.tar.lzma
+  rsync-3.0.8-X-msys-1.0.17-bin.tar.lzma
+  rsync-3.0.8-X-msys-1.0.17-doc.tar.lzma
+  rsync-3.0.8-X-msys-1.0.17-lic.tar.lzma
+
+========================================================================
+
+Files included in the binary packages:
+
+rsync-*-bin:
+  /usr/bin/rsync.exe
+
+rsync-*-doc:
+  /usr/share/doc/rsync/3.0.8/NEWS
+  /usr/share/doc/rsync/3.0.8/OLDNEWS
+  /usr/share/doc/rsync/3.0.8/README
+  /usr/share/doc/rsync/3.0.8/TODO
+  /usr/share/doc/MSYS/rsync-3.0.8-1-msys.RELEASE_NOTES.txt
+  /usr/share/man/man1/rsync.1
+  /usr/share/man/man5/rsyncd.conf.5
+
+rsync-*-lic:
+  /usr/share/doc/rsync/3.0.8/COPYING
+
+========================================================================
+
+Test suite results -- none. Test suite requires working symbolic links.
+========================================================================
+
+Port Notes:
+
+Thanks to Cesar Romani and Ralph Engels for the initial porting work.
+
+----- rsync-3.0.8-1 -----
+* First release for MSYS
+

@@ -1,0 +1,143 @@
+msys popt
+========================================================================
+This is the popt(3) command line option parsing library. While it is
+similiar to getopt(3), it contains a number of enhancements, including:
+
+        1) popt is fully reentrant
+        2) popt can parse arbitrary argv[] style arrays while 
+           getopt(3) makes this quite difficult
+        3) popt allows users to alias command line arguments
+        4) popt provides convience functions for parsing strings
+           into argv[] style arrays
+
+This version has been modified and compiled for use in the MSYS
+environment. It should be installed into the / == /usr directory, which
+is usually but not always, C:\msys\1.0.
+
+NOTE1: based on the rpm5.org version of popt, rather than the
+       rpm.org version. Whatever Jeff Johnston's faults, he has been
+       more intimately involved with the rpm codebase for a longer
+       period than anyone else -- if that's good enough for OpenPKG,
+       it's good enough for me:
+       http://trainofthoughts.org/blog/2008/01/06/rpm5-vs-rpm/
+       Besides, one of the "selling points" of the rpm5 version is they
+       claim it is more portable and less linux-centric. MSYS != linux,
+       so that's a good thing for us.
+
+Runtime requirements:
+  msysCORE-1.0.13-2-msys-1.0.13-bin
+  libintl-0.17-2-msys-1.0.13-dll-8
+  libiconv-1.13.1-2-msys-dll-2
+
+Build requirements (these, or newer)
+  MSYS toolchain
+    binutils-2.19.51-3-msys-1.0.13-bin
+    gcc-3.4.4-3-msys-1.0.13-bin
+    w32api-3.14-3-msys-1.0.12-dev
+    msysCORE-1.0.13-2-msys-1.0.13-dev
+
+  Devel Tools and Dependent Libraries
+    autoconf-2.65-1-msys-1.0.13-bin
+    automake-1.11.1-1-msys-1.0.13-bin
+    libiconv-1.13.1-2-msys-1.0.13-bin
+    libiconv-1.13.1-2-msys-1.0.13-dev
+    gettext-0.17-2-msys-1.0.13-bin
+    gettext-0.17-2-msys-1.0.13-dev
+    libgettextpo-0.17-2-msys-1.0.13-dll-0
+    libtool-2.2.7a-2-msys-1.0.13-bin
+
+  MSYS Environment
+    perl-5.6.1_2-2-msys-1.0.13-bin
+    libcrypt-1.1_1-3-msys-1.0.13-dll-0
+    libgdbm-1.8.3-3-msys-1.0.13-dll-3
+    zlib-1.2.3-2-msys-1.0.13-dll
+    coreutils-5.97-2-msys-1.0.11-bin
+    make-3.81-2-msys-1.0.11-bin
+    bash-3.1.17-2-msys-1.0.11-bin
+    tar-1.23-2-msys-1.0.13-bin
+    gzip-1.3.12-2-msys-1.0.13-bin
+    xz-4.999.9beta_20100401-1-msys-1.0.13-bin
+    liblzma-4.999.9beta_20100401-1-msys-1.0.13-dll-1
+    file-5.04-2-msys-1.0.13-bin
+    grep-2.5.4-2-msys-1.0.13-bin
+    sed-4.2.1-2-msys-1.0.13-bin
+    gawk-3.1.7-2-msys-1.0.13-bin
+    cvs-1.12.13-2-msys-1.0.13-bin
+ 
+Canonical homepage:
+  http://rpm5.org/
+
+Canonical download:
+  http://rpm5.org/files/popt/
+
+License:
+  X11
+
+Language:
+  C
+
+========================================================================
+
+Build instructions:
+  unpack popt-1.15-2-msys-1.0.13-src.tar.lzma
+  ./msys-build-popt popt-1.15.tar.gz
+
+This will create:
+  popt-1.15-2-msys-1.0.13-src.tar.lzma
+  libpopt-1.15-2-msys-1.0.13-dll-0.tar.lzma
+  libpopt-1.15-2-msys-1.0.13-dev.tar.lzma
+  libpopt-1.15-2-msys-1.0.13-lang.tar.lzma
+  popt-1.15-2-msys-1.0.13-doc.tar.lzma
+  popt-1.15-2-msys-1.0.13-lic.tar.lzma
+
+========================================================================
+
+Test suite results
+
+This section of this document is updated with each new release.
+No history is maintained here.
+
+PASS testit.sh
+=============
+1 test passed
+=============
+
+(this actually includes 59 subtests)
+
+========================================================================
+
+Port Notes:
+
+libpopt exports variables of complex (struct) type. With the advent of
+msys-gcc-3.4.x, symbols of this sort are supported using auto-import and
+"pseudo-relocs" [1].  However, in normal usage these variables are
+accessed by client programs only by invoking certain macros, such as
+   POPT_AUTOALIAS
+   POPT_AUTOHELP
+and similar.  In each macro, the "problem" variable is referenced such
+that auto-import works properly.  However, if you ever receive the
+following message while building a client program:
+  "variable poptHelpOptions can't be auto-imported. Please read the
+   documentation for ld's `enable-auto-import' for details."
+then the chances are you are using poptHelpOptions (or poptAliasOptions)
+in a way that you should not.  poptHelpOptions and poptAliasOptions
+are ONLY supposed to be referenced via the macros listed above.
+
+If you verify that you are using the variables in the prescribed manner,
+then as a workaround you should use the linker option
+   -Wl,--enable-runtime-pseudo-relocs
+
+[1] see  'info -n WIN32 -f /c/MinGW/info/ld.info'
+
+----------  popt-1.15-2 -- 2010 Apr 27 -----------
+* Rebuild with latest msys-gcc-3.x compiler, against msys 1.0.13
+* Enable i18n; link against DLL version of libintl and libiconv
+* Ship i18n files in separate -lang package
+* Remove declspec ugliness; rely instead on pseudo-reloc support
+  provided by new msys-gcc compiler.
+
+----------  popt-1.15-1 -- 2009 Aug 27 -----------
+* First release of popt for msys using new packaging standard.
+* Includes patches adapted from GnuWin32 (popt-1.8) to support true
+  DLL operation, as well as msys-specific fixes.
+

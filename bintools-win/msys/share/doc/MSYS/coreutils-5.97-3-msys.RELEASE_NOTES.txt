@@ -1,0 +1,139 @@
+msys coreutils
+========================================================================
+GNU coreutils provides a collection of commonly used utilities essential
+to a standard POSIX environment.  It comprises the former textutils,
+sh-utils, and fileutils packages.
+
+The cygwin port (on which this msys port is based) has several patches.
+Because Windows insists on naming executables with a `.exe' suffix,
+several of the utilities have been patched to automatically handle this
+suffix when given the traditional Unix name with no suffix (`cp',
+`install', `ln', and `mv').  Other issues arise because of the
+difference between text and binary mounts; some utilities default to
+binary mode and others attempt to respect the underlying mount point,
+depending on the most common usage pattern of the utility.  `df'
+attempts to recognize Cygwin's mount information, but cannot determine
+the underlying file systems (FAT, NTFS, NFS, etc.).  Several utilities
+(`basename', `dirname', and `mv', for example) have been patched to
+recognize that // is distinct from /.  Also, `ls' and `stat' have a
+cygwin-specific option, --append-exe, to add .exe to a filename if
+needed.
+
+This version has been modified and compiled for use in the MSYS
+environment. It should be installed into the / == /usr directory, which
+is usually but not always, C:\msys\1.0. It is built with NLS support,
+which is why the applications are somewhat larger than corresponding
+instances from previous releases.  It is delivered in several sub-packages:
+
+  bin:
+    Contains those applications that were historically part of
+    the standard MSYS installation.
+
+  ext:
+    Contains "the rest" of the coreutils applications (that can
+    actually build on msys; for instance, hostid is not present
+    because it requires an OS function not provided by msys).
+
+  lang: (optional) the NLS message catalogs.
+  doc: documentation
+  lic: license files
+  src: source code
+
+Runtime requirements:
+  msysCORE-1.0.13-2-msys-1.0.13-bin
+  libintl-0.17-2-msys-1.0.13-dll-8
+  libiconv-1.13.1-2-msys-dll-2
+  libtermcap-0.20050421_1-2-msys-1.0.13-dll-0
+ 
+Build requirements (these, or newer)
+  MSYS toolchain
+    binutils-2.19.51-3-msys-1.0.13-bin
+    gcc-3.4.4-3-msys-1.0.13-bin
+    w32api-3.14-3-msys-1.0.12-dev
+    msysCORE-1.0.13-2-msys-1.0.13-dev
+
+  Devel Tools and Dependent Libraries 
+    autoconf-2.65-1-msys-1.0.13-bin
+    automake-1.11.1-1-msys-1.0.13-bin
+    libiconv-1.13.1-2-msys-1.0.13-bin
+    libiconv-1.13.1-2-msys-1.0.13-dev
+    gettext-0.17-2-msys-1.0.13-bin
+    gettext-0.17-2-msys-1.0.13-dev
+    libgettextpo-0.17-2-msys-1.0.13-dll-0
+    libtool-2.2.7a-2-msys-1.0.13-bin
+    texinfo-4.13a-2-msys-1.0.13-bin
+    libtermcap-0.20050421_1-2-msys-1.0.13-dev
+   
+  MSYS Environment
+    perl-5.6.1_2-2-msys-1.0.13-bin
+    libcrypt-1.1_1-3-msys-1.0.13-dll-0
+    libgdbm-1.8.3-3-msys-1.0.13-dll-3
+    zlib-1.2.3-2-msys-1.0.13-dll
+    coreutils-5.97-2-msys-1.0.11-bin
+    make-3.81-2-msys-1.0.11-bin
+    bash-3.1.17-2-msys-1.0.11-bin
+    tar-1.23-2-msys-1.0.13-bin
+    bzip2-1.0.5-2-msys-1.0.13-bin
+    libbz2-1.0.5-2-msys-1.0.13-dll-1
+    xz-4.999.9beta_20100401-1-msys-1.0.13-bin
+    liblzma-4.999.9beta_20100401-1-msys-1.0.13-dll-1
+    file-5.04-2-msys-1.0.13-bin
+    grep-2.5.4-2-msys-1.0.13-bin
+    sed-4.2.1-2-msys-1.0.13-bin
+    gawk-3.1.7-2-msys-1.0.13-bin
+    cvs-1.12.13-2-msys-1.0.13-bin
+ 
+Canonical homepage:
+  https://savannah.gnu.org/projects/coreutils
+
+Canonical download:
+  ftp://alpha.gnu.org/gnu/coreutils/ (unstable releases, like 6.0)
+  ftp://ftp.gnu.org/gnu/coreutils/ (stable releases, like 6.6)
+
+License:
+  GPLv3+
+
+Language:
+  C
+
+========================================================================
+
+Build instructions:
+  unpack coreutils-5.97-3-msys-1.0.13-src.tar.lzma
+  ./msys-build-coreutils coreutils-5.97.tar.bz2
+
+This will create:
+  coreutils-5.97-3-msys-1.0.13-src.tar.lzma
+  coreutils-5.97-3-msys-1.0.13-bin.tar.lzma
+  coreutils-5.97-3-msys-1.0.13-ext.tar.lzma
+  coreutils-5.97-3-msys-1.0.13-lang.tar.lzma
+  coreutils-5.97-3-msys-1.0.13-doc.tar.lzma
+  coreutils-5.97-3-msys-1.0.13-lic.tar.lzma
+
+========================================================================
+
+Test suite results
+
+This section of this document is updated with each new release.
+No history is maintained here.
+
+The test results are pretty bad, at first glance: lots of failed or
+skipped tests.  However, inspection shows that most of these problems
+are artifacts of deliberate msys design choices: `ln -s' makes a copy,
+for instance. Actual use seems to bear this out: the tools seem to work
+just fine.
+
+========================================================================
+
+Port Notes:
+
+----------  coreutils-5.97-3 -- 2010 Apr 27 -----------
+* Rebuild with latest msys-gcc-3.x compiler, against msys 1.0.13
+* Link against DLL version of libintl and libiconv
+
+----------  coreutils-5.97-2 -- 2009 Nov 07 -----------
+* 
+
+----------  coreutils-5.97-1 -- 2009 Nov 01 -----------
+* First release of coreutils for msys using new packaging standard.
+
